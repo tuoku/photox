@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:imagex/src/item.dart';
+import 'package:photox/src/item.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
-class ImageXRouteWrapper extends StatefulWidget {
-  ImageXRouteWrapper({
+class PhotoxRouteWrapper extends StatefulWidget {
+  PhotoxRouteWrapper({
     super.key,
     this.initialIndex = 0,
     required this.items,
@@ -13,15 +13,15 @@ class ImageXRouteWrapper extends StatefulWidget {
 
   final int initialIndex;
   final PageController pageController;
-  final List<ImageXItem> items;
+  final List<PhotoxItem> items;
 
   @override
   State<StatefulWidget> createState() {
-    return _ImageXRouteWrapperState();
+    return _PhotoxRouteWrapperState();
   }
 }
 
-class _ImageXRouteWrapperState extends State<ImageXRouteWrapper> {
+class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
   late int currentIndex = widget.initialIndex;
 
   void onPageChanged(int index) {
@@ -90,7 +90,7 @@ class _ImageXRouteWrapperState extends State<ImageXRouteWrapper> {
       Navigator.of(context).pop();
     } else {
       setState(() {
-        animationDuration = Duration(milliseconds: 300);
+        animationDuration = const Duration(milliseconds: 300);
         opacity = 1;
         positionYDelta = 0;
       });
@@ -171,7 +171,7 @@ class _ImageXRouteWrapperState extends State<ImageXRouteWrapper> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final ImageXItem item = widget.items[index];
+    final PhotoxItem item = widget.items[index];
     return PhotoViewGalleryPageOptions(
       imageProvider: item.isAsset
           ? Image.asset(item.resource).image

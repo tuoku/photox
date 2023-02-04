@@ -10,7 +10,7 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
-# ImageX
+# photox
 
 An all-in-one solution for displaying interactive images
 
@@ -24,15 +24,15 @@ An all-in-one solution for displaying interactive images
 
 ## Getting started
 
-Add `imagex` as a dependency in your pubspec.yaml file
+Add `photox` as a dependency in your pubspec.yaml file
 
 ```
-flutter pub add imagex
+flutter pub add photox
 ```
 
-Import ImageX:
+Import photox:
 ```dart
-import 'package:imagex/imagex.dart';
+import 'package:photox/photox.dart';
 ```
 
 ## Usage
@@ -44,11 +44,11 @@ Widget build(BuildContext context) {
   return Container(
     height: 400,
     width: 400,
-    child: ImageX(
+    child: photox(
       items: [
-        ImageXItem(
+        photoxItem(
           id: "1", resource: "assets/img1.jpg", isAsset: true),
-        ImageXItem(
+        photoxItem(
           id: "2", resource: "assets/img2.jpeg", isAsset: true),
       ]
     )

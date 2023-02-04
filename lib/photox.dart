@@ -1,0 +1,4 @@
+library photox;
+
+export 'src/photox.dart' show PhotoX;
+export 'src/item.dart' show PhotoxItem;

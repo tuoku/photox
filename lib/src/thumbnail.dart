@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:imagex/src/item.dart';
+import 'package:photox/src/item.dart';
 
-class ImageXThumbnail extends StatelessWidget {
-  const ImageXThumbnail({
+class PhotoxThumbnail extends StatelessWidget {
+  const PhotoxThumbnail({
     Key? key,
     required this.item,
     required this.onTap,
   }) : super(key: key);
 
-  final ImageXItem item;
+  final PhotoxItem item;
 
   final GestureTapCallback onTap;
 

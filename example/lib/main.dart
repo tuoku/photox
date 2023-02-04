@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:imagex/imagex.dart';
+import 'package:photox/photox.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,10 +41,10 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
                 height: 400,
                 width: MediaQuery.of(context).size.width,
-                child: ImageX(items: [
-                  ImageXItem(
+                child: PhotoX(items: [
+                  PhotoxItem(
                       id: "1", resource: "assets/img1.jpeg", isAsset: true),
-                  ImageXItem(
+                  PhotoxItem(
                       id: "2", resource: "assets/img2.jpg", isAsset: true)
                 ]))
           ],
