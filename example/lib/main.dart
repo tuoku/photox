@@ -42,9 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: 400,
                 width: MediaQuery.of(context).size.width,
                 child: PhotoX(items: [
-                  PhotoxItem(
+                  PhotoXItem(
                       id: "1", resource: "assets/img1.jpeg", isAsset: true),
-                  PhotoxItem(
+                  PhotoXItem(
                       id: "2", resource: "assets/img2.jpg", isAsset: true)
                 ]))
           ],

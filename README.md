@@ -46,9 +46,9 @@ Widget build(BuildContext context) {
     width: 400,
     child: PhotoX(
       items: [
-        PhotoxItem(
+        PhotoXItem(
           id: "1", resource: "assets/img1.jpg", isAsset: true),
-        PhotoxItem(
+        PhotoXItem(
           id: "2", resource: "assets/img2.jpeg", isAsset: true),
       ]
     )

@@ -13,7 +13,7 @@ class PhotoxRouteWrapper extends StatefulWidget {
 
   final int initialIndex;
   final PageController pageController;
-  final List<PhotoxItem> items;
+  final List<PhotoXItem> items;
 
   @override
   State<StatefulWidget> createState() {
@@ -171,7 +171,7 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
-    final PhotoxItem item = widget.items[index];
+    final PhotoXItem item = widget.items[index];
     return PhotoViewGalleryPageOptions(
       imageProvider: item.isAsset
           ? Image.asset(item.resource).image

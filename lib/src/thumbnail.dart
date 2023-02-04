@@ -9,7 +9,7 @@ class PhotoxThumbnail extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  final PhotoxItem item;
+  final PhotoXItem item;
 
   final GestureTapCallback onTap;
 

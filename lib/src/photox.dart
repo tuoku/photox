@@ -8,7 +8,7 @@ import 'item.dart';
 class PhotoX extends StatelessWidget {
   PhotoX({required this.items, super.key});
 
-  final List<PhotoxItem> items;
+  final List<PhotoXItem> items;
   final _pc = PageController();
   @override
   Widget build(BuildContext context) {
