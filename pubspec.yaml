@@ -1,7 +1,7 @@
 name: imagex
-description: A new Flutter package project.
+description: An all-in-one solution for displaying interactive images.
 version: 0.0.1
-homepage:
+homepage: https://github.com/tuoku/imagex
 
 environment:
   sdk: '>=2.19.0 <3.0.0'
