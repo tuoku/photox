@@ -10,30 +10,49 @@ For general information about developing packages, see the Dart guide for
 and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
+# ImageX
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+An all-in-one solution for displaying interactive images
 
+<img src="https://user-images.githubusercontent.com/70937274/216778063-619e86a5-a512-4cf0-af08-6bc35eb75bf6.gif" height="434" width="200">&nbsp;&nbsp;&nbsp;<img src="https://user-images.githubusercontent.com/70937274/216778074-3660e543-92a7-48b8-a8c7-65d181eb609e.gif" height="434" width="200">
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Smoothly animate images into fullscreen and back
+- Swipe to dismiss images
+- Pinch to zoom
+- Automatically generate swipeable gallery when given multiple images
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add `imagex` as a dependency in your pubspec.yaml file
+
+```
+flutter pub add imagex
+```
+
+Import ImageX:
+```dart
+import 'package:imagex/imagex.dart';
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
 
 ```dart
-const like = 'sample';
+@override
+Widget build(BuildContext context) {
+  return Container(
+    height: 400,
+    width: 400,
+    child: ImageX(
+      items: [
+        ImageXItem(
+          id: "1", resource: "assets/img1.jpg", isAsset: true),
+        ImageXItem(
+          id: "2", resource: "assets/img2.jpeg", isAsset: true),
+      ]
+    )
+  );
+}
 ```
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
