@@ -32,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gallery"),
+        title: Text("DismissMode.swipeVertical"),
       ),
       body: Center(
         child: Column(
@@ -41,11 +41,11 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
                 height: 400,
                 width: MediaQuery.of(context).size.width,
-                child: PhotoX(items: [
+                child: PhotoX(dismissMode: DismissMode.swipeAny, items: [
                   PhotoXItem(
                       id: "1", resource: "assets/img1.jpeg", isAsset: true),
                   PhotoXItem(
-                      id: "2", resource: "assets/img2.jpg", isAsset: true)
+                      id: "2", resource: "assets/img1.jpeg", isAsset: true),
                 ]))
           ],
         ),

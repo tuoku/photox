@@ -1,0 +1,1 @@
+enum DismissMode { swipeVertical, swipeAny }

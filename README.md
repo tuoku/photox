@@ -56,3 +56,9 @@ Widget build(BuildContext context) {
 }
 ```
 
+### DismissMode
+| DismissMode.swipeAny | DismissMode.swipeVertical |
+| --- | --- |
+| <img src="https://user-images.githubusercontent.com/70937274/218322920-97a5040f-40ad-4052-9ef0-7ee4a176efe3.gif" height="434" width="200"> | <img src="https://user-images.githubusercontent.com/70937274/218322933-cac41507-6faa-4608-a2d0-1e640f1a562a.gif" height="434" width="200"> |
+
+

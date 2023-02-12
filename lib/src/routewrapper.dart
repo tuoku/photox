@@ -1,19 +1,24 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:photox/src/dismissmode.dart';
 import 'package:photox/src/item.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 class PhotoxRouteWrapper extends StatefulWidget {
-  PhotoxRouteWrapper({
-    super.key,
-    this.initialIndex = 0,
-    required this.items,
-  }) : pageController = PageController(initialPage: initialIndex);
+  PhotoxRouteWrapper(
+      {super.key,
+      this.initialIndex = 0,
+      required this.items,
+      this.dismissMode = DismissMode.swipeAny})
+      : pageController = PageController(initialPage: initialIndex);
 
   final int initialIndex;
   final PageController pageController;
   final List<PhotoXItem> items;
+  final DismissMode dismissMode;
 
   @override
   State<StatefulWidget> createState() {
@@ -31,10 +36,13 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
   }
 
   double? initialPositionY = 0;
+  double? initialPositionX = 0;
 
   double? currentPositionY = 0;
+  double? currentPositionX = 0;
 
   double positionYDelta = 0;
+  double positionXDelta = 0;
 
   double opacity = 1;
 
@@ -54,6 +62,92 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
     animationDuration = Duration.zero;
   }
 
+  void _startPan(DragStartDetails details) {
+    print("start pan");
+    setState(() {
+      initialPositionY = details.globalPosition.dy;
+      initialPositionX = details.globalPosition.dx;
+    });
+  }
+
+  void _pointerDown(PointerDownEvent event) {
+    print("pointer down");
+    setState(() {
+      initialPositionY = event.position.dy;
+      initialPositionX = event.position.dx;
+    });
+  }
+
+  void _pointerMove(PointerMoveEvent event) {
+    print("pointer move");
+    setState(() {
+      currentPositionY = event.position.dy;
+      positionYDelta = currentPositionY! - initialPositionY!;
+
+      currentPositionX = event.position.dx;
+      positionXDelta = currentPositionX! - initialPositionX!;
+      setOpacity();
+    });
+  }
+
+  void _pointerEnd(PointerUpEvent event) {
+    print("pointer up");
+    if (positionYDelta > disposeLimit ||
+        positionYDelta < -disposeLimit ||
+        positionXDelta > disposeLimit ||
+        positionXDelta < -disposeLimit) {
+      Navigator.of(context).pop();
+    } else {
+      setState(() {
+        animationDuration = const Duration(milliseconds: 300);
+        opacity = 1;
+        positionYDelta = 0;
+        positionXDelta = 0;
+      });
+
+      Future.delayed(animationDuration).then((_) {
+        setState(() {
+          animationDuration = Duration.zero;
+        });
+      });
+    }
+  }
+
+  void _whilePan(DragUpdateDetails details) {
+    print("while pan");
+    setState(() {
+      currentPositionY = details.globalPosition.dy;
+      positionYDelta = currentPositionY! - initialPositionY!;
+
+      currentPositionX = details.globalPosition.dx;
+      positionXDelta = currentPositionX! - initialPositionX!;
+      setOpacity();
+    });
+  }
+
+  void _endPan(DragEndDetails details) {
+    print("end pan");
+    if (positionYDelta > disposeLimit ||
+        positionYDelta < -disposeLimit ||
+        positionXDelta > disposeLimit ||
+        positionXDelta < -disposeLimit) {
+      Navigator.of(context).pop();
+    } else {
+      setState(() {
+        animationDuration = const Duration(milliseconds: 300);
+        opacity = 1;
+        positionYDelta = 0;
+        positionXDelta = 0;
+      });
+
+      Future.delayed(animationDuration).then((_) {
+        setState(() {
+          animationDuration = Duration.zero;
+        });
+      });
+    }
+  }
+
   void _startVerticalDrag(details) {
     setState(() {
       initialPositionY = details.globalPosition.dy;
@@ -69,9 +163,13 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
   }
 
   setOpacity() {
-    double tmp = positionYDelta < 0
-        ? 1 - ((positionYDelta / 1000) * -1)
-        : 1 - (positionYDelta / 1000);
+    double tmp = widget.dismissMode == DismissMode.swipeAny
+        ? min(positionYDelta, positionXDelta) < 0
+            ? 1 - ((min(positionYDelta, positionXDelta) / 1000) * -1)
+            : 1 - (max(positionYDelta, positionXDelta) / 1000)
+        : positionYDelta < 0
+            ? 1 - ((positionYDelta / 1000) * -1)
+            : 1 - (positionYDelta / 1000);
     if (tmp > 1) {
       opacity = 1;
     } else if (tmp < 0) {
@@ -121,18 +219,68 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
         ),
         extendBodyBehindAppBar: true,
         body: Listener(
+            onPointerMove: (event) =>
+                widget.dismissMode == DismissMode.swipeAny &&
+                        !isLocked &&
+                        !isZoomed
+                    ? _pointerMove(event)
+                    : null,
             onPointerDown: (event) {
               _pointersOnScreen++;
               setState(() => isLocked = _pointersOnScreen >= 2);
+              if (widget.dismissMode == DismissMode.swipeAny &&
+                  !isLocked &&
+                  !isZoomed) {
+                _pointerDown(event);
+              }
             },
-            onPointerUp: (event) => _pointersOnScreen--,
+            onPointerUp: (event) {
+              _pointersOnScreen--;
+              if (widget.dismissMode == DismissMode.swipeAny &&
+                  !isLocked &&
+                  !isZoomed) {
+                print("end pan");
+                if (positionYDelta > disposeLimit ||
+                    positionYDelta < -disposeLimit ||
+                    positionXDelta > disposeLimit ||
+                    positionXDelta < -disposeLimit) {
+                  Navigator.of(context).pop();
+                } else {
+                  setState(() {
+                    animationDuration = const Duration(milliseconds: 300);
+                    opacity = 1;
+                    positionYDelta = 0;
+                    positionXDelta = 0;
+                  });
+
+                  Future.delayed(animationDuration).then((_) {
+                    setState(() {
+                      animationDuration = Duration.zero;
+                    });
+                  });
+                }
+              }
+            },
             child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
                 onVerticalDragStart: (details) =>
-                    isLocked || isZoomed ? null : _startVerticalDrag(details),
+                    widget.dismissMode == DismissMode.swipeAny ||
+                            isLocked ||
+                            isZoomed
+                        ? null
+                        : _startVerticalDrag(details),
                 onVerticalDragUpdate: (details) =>
-                    isLocked || isZoomed ? null : _whileVerticalDrag(details),
+                    widget.dismissMode == DismissMode.swipeAny ||
+                            isLocked ||
+                            isZoomed
+                        ? null
+                        : _whileVerticalDrag(details),
                 onVerticalDragEnd: (details) =>
-                    isLocked || isZoomed ? null : _endVerticalDrag(details),
+                    widget.dismissMode == DismissMode.swipeAny ||
+                            isLocked ||
+                            isZoomed
+                        ? null
+                        : _endVerticalDrag(details),
                 child: Container(
                   color: Colors.black.withOpacity(opacity),
                   constraints: BoxConstraints.expand(
@@ -152,10 +300,12 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
                           curve: Curves.fastOutSlowIn,
                           top: 0 + positionYDelta,
                           bottom: 0 - positionYDelta,
-                          left: 0,
-                          right: 0,
+                          left: 0 + positionXDelta,
+                          right: 0 - positionXDelta,
                           child: PhotoViewGallery.builder(
-                            scrollPhysics: const BouncingScrollPhysics(),
+                            scrollPhysics: widget.items.length == 1
+                                ? const NeverScrollableScrollPhysics()
+                                : const BouncingScrollPhysics(),
                             builder: _buildItem,
                             itemCount: widget.items.length,
                             backgroundDecoration: BoxDecoration(
@@ -177,8 +327,8 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
           ? Image.asset(item.resource).image
           : CachedNetworkImageProvider(item.resource),
       initialScale: PhotoViewComputedScale.contained,
-      minScale: PhotoViewComputedScale.contained * (0.5),
-      maxScale: PhotoViewComputedScale.covered * 2,
+      minScale: PhotoViewComputedScale.contained,
+      maxScale: PhotoViewComputedScale.contained,
       heroAttributes: PhotoViewHeroAttributes(tag: item.id),
     );
   }
