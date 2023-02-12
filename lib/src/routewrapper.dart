@@ -62,16 +62,7 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
     animationDuration = Duration.zero;
   }
 
-  void _startPan(DragStartDetails details) {
-    print("start pan");
-    setState(() {
-      initialPositionY = details.globalPosition.dy;
-      initialPositionX = details.globalPosition.dx;
-    });
-  }
-
   void _pointerDown(PointerDownEvent event) {
-    print("pointer down");
     setState(() {
       initialPositionY = event.position.dy;
       initialPositionX = event.position.dx;
@@ -79,7 +70,6 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
   }
 
   void _pointerMove(PointerMoveEvent event) {
-    print("pointer move");
     setState(() {
       currentPositionY = event.position.dy;
       positionYDelta = currentPositionY! - initialPositionY!;
@@ -88,64 +78,6 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
       positionXDelta = currentPositionX! - initialPositionX!;
       setOpacity();
     });
-  }
-
-  void _pointerEnd(PointerUpEvent event) {
-    print("pointer up");
-    if (positionYDelta > disposeLimit ||
-        positionYDelta < -disposeLimit ||
-        positionXDelta > disposeLimit ||
-        positionXDelta < -disposeLimit) {
-      Navigator.of(context).pop();
-    } else {
-      setState(() {
-        animationDuration = const Duration(milliseconds: 300);
-        opacity = 1;
-        positionYDelta = 0;
-        positionXDelta = 0;
-      });
-
-      Future.delayed(animationDuration).then((_) {
-        setState(() {
-          animationDuration = Duration.zero;
-        });
-      });
-    }
-  }
-
-  void _whilePan(DragUpdateDetails details) {
-    print("while pan");
-    setState(() {
-      currentPositionY = details.globalPosition.dy;
-      positionYDelta = currentPositionY! - initialPositionY!;
-
-      currentPositionX = details.globalPosition.dx;
-      positionXDelta = currentPositionX! - initialPositionX!;
-      setOpacity();
-    });
-  }
-
-  void _endPan(DragEndDetails details) {
-    print("end pan");
-    if (positionYDelta > disposeLimit ||
-        positionYDelta < -disposeLimit ||
-        positionXDelta > disposeLimit ||
-        positionXDelta < -disposeLimit) {
-      Navigator.of(context).pop();
-    } else {
-      setState(() {
-        animationDuration = const Duration(milliseconds: 300);
-        opacity = 1;
-        positionYDelta = 0;
-        positionXDelta = 0;
-      });
-
-      Future.delayed(animationDuration).then((_) {
-        setState(() {
-          animationDuration = Duration.zero;
-        });
-      });
-    }
   }
 
   void _startVerticalDrag(details) {
@@ -239,7 +171,6 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
               if (widget.dismissMode == DismissMode.swipeAny &&
                   !isLocked &&
                   !isZoomed) {
-                print("end pan");
                 if (positionYDelta > disposeLimit ||
                     positionYDelta < -disposeLimit ||
                     positionXDelta > disposeLimit ||

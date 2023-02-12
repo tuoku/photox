@@ -32,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("DismissMode.swipeVertical"),
+        title: const Text("DismissMode.swipeVertical"),
       ),
       body: Center(
         child: Column(
