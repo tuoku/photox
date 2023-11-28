@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
                 height: 400,
                 width: MediaQuery.of(context).size.width,
-                child: PhotoX(dismissMode: DismissMode.swipeAny, items: [
+                child: PhotoX(dismissMode: DismissMode.swipeVertical, items: [
                   PhotoXItem(
                       id: "1", resource: "assets/img1.jpeg", isAsset: true),
                   PhotoXItem(
