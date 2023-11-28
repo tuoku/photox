@@ -12,6 +12,8 @@ class PhotoxRouteWrapper extends StatefulWidget {
       {super.key,
       this.initialIndex = 0,
       required this.items,
+      this.appBarLeadingWidget,
+      this.titleTextStyle,
       this.dismissMode = DismissMode.swipeAny})
       : pageController = PageController(initialPage: initialIndex);
 
@@ -19,6 +21,8 @@ class PhotoxRouteWrapper extends StatefulWidget {
   final PageController pageController;
   final List<PhotoXItem> items;
   final DismissMode dismissMode;
+  final TextStyle? titleTextStyle;
+  final Widget? appBarLeadingWidget;
 
   @override
   State<StatefulWidget> createState() {
@@ -142,11 +146,20 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
+          leading: widget.appBarLeadingWidget ??
+              IconButton(
+                icon: const Icon(Icons.close),
+                color: Colors.white,
+                onPressed: () => Navigator.of(context).pop(),
+              ),
           elevation: 0,
           centerTitle: true,
           title: isSingle
               ? null
-              : Text("${currentIndex + 1}/${widget.items.length}"),
+              : Text(
+                  "${currentIndex + 1}/${widget.items.length}",
+                  style: widget.titleTextStyle,
+                ),
           backgroundColor: Colors.transparent,
         ),
         extendBodyBehindAppBar: true,

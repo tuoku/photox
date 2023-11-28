@@ -18,6 +18,8 @@ class PhotoX extends StatelessWidget {
       this.pageIndicatorBubblePadding,
       this.pageIndicatorBubbleRadius,
       this.pageIndicatorInactiveColor,
+      this.fullscreenGalleryAppBarLeadingWidget,
+      this.fullscreenGalleryTitleTextStyle,
       super.key})
       : assert(!(dismissMode == DismissMode.swipeAny && items.length >= 2),
             "Must provide only 1 item when using DismissMode.swipeAny");
@@ -31,6 +33,8 @@ class PhotoX extends StatelessWidget {
   final double? pageIndicatorBubbleRadius;
   final EdgeInsetsGeometry? pageIndicatorBubblePadding;
   final Color? pageIndicatorBackgroundColor;
+  final TextStyle? fullscreenGalleryTitleTextStyle;
+  final Widget? fullscreenGalleryAppBarLeadingWidget;
 
   final _pc = PageController();
   @override
@@ -88,6 +92,8 @@ class PhotoX extends StatelessWidget {
       //transitionDuration: Duration(milliseconds: 0),
       pageBuilder: (context, a, b) {
         return PhotoxRouteWrapper(
+          titleTextStyle: fullscreenGalleryTitleTextStyle,
+          appBarLeadingWidget: fullscreenGalleryAppBarLeadingWidget,
           items: items,
           initialIndex: index,
           dismissMode: dismissMode,
