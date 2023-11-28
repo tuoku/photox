@@ -14,11 +14,13 @@ class PhotoxRouteWrapper extends StatefulWidget {
       required this.items,
       this.appBarLeadingWidget,
       this.titleTextStyle,
+      required this.thumbnailPageController,
       this.dismissMode = DismissMode.swipeAny})
       : pageController = PageController(initialPage: initialIndex);
 
   final int initialIndex;
   final PageController pageController;
+  final PageController thumbnailPageController;
   final List<PhotoXItem> items;
   final DismissMode dismissMode;
   final TextStyle? titleTextStyle;
@@ -34,6 +36,7 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
   late int currentIndex = widget.initialIndex;
 
   void onPageChanged(int index) {
+    widget.thumbnailPageController.jumpToPage(index);
     setState(() {
       currentIndex = index;
     });
@@ -121,7 +124,6 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
   }
 
   _endVerticalDrag(DragEndDetails details) {
-    print("velocity: " + "${details.primaryVelocity}");
     if (positionYDelta > disposeLimit ||
         positionYDelta < -disposeLimit ||
         (details.primaryVelocity ?? 0).abs() > flickVelocityLimit) {

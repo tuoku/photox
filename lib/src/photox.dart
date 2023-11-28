@@ -92,6 +92,7 @@ class PhotoX extends StatelessWidget {
       //transitionDuration: Duration(milliseconds: 0),
       pageBuilder: (context, a, b) {
         return PhotoxRouteWrapper(
+          thumbnailPageController: _pc,
           titleTextStyle: fullscreenGalleryTitleTextStyle,
           appBarLeadingWidget: fullscreenGalleryAppBarLeadingWidget,
           items: items,
