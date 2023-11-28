@@ -50,7 +50,8 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
 
   double opacity = 1;
 
-  double disposeLimit = 300;
+  final double disposeLimit = 300;
+  final double flickVelocityLimit = 2500;
 
   late Duration animationDuration;
 
@@ -120,7 +121,10 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
   }
 
   _endVerticalDrag(DragEndDetails details) {
-    if (positionYDelta > disposeLimit || positionYDelta < -disposeLimit) {
+    print("velocity: " + "${details.primaryVelocity}");
+    if (positionYDelta > disposeLimit ||
+        positionYDelta < -disposeLimit ||
+        (details.primaryVelocity ?? 0).abs() > flickVelocityLimit) {
       Navigator.of(context).pop();
     } else {
       setState(() {
