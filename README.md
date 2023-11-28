@@ -63,3 +63,31 @@ Widget build(BuildContext context) {
 | <img src="https://user-images.githubusercontent.com/70937274/218322920-97a5040f-40ad-4052-9ef0-7ee4a176efe3.gif" height="434" width="200"> | <img src="https://user-images.githubusercontent.com/70937274/218322933-cac41507-6faa-4608-a2d0-1e640f1a562a.gif" height="434" width="200"> |
 
 ⚠️ `DismissMode.swipeAny` can only be used when provided with a single `PhotoXItem`
+
+
+### showPageIndicator
+Whether to show the page indicator in the thumbnail gallery for multiple PhotoXItems
+
+### pageIndicatorAlignment
+The alignment of the page indicator relative to the gallery
+
+### pageIndicatorActiveColor
+The color of the active bubble in the page indicator
+
+### pageIndicatorInactiveColor
+The color of the inactive bubbles in the page indicator
+
+### pageIndicatorBackgroundColor
+The background color of the page indicator
+
+### pageIndicatorBubbleRadius
+The radius of the indicator bubbles in the page indicator
+
+### pageIndicatorBubblePadding
+The padding between the bubbles in the page indicator
+
+### fullscreenGalleryTitleTextStyle
+The TextStyle for the AppBar title in the fullscreen gallery
+
+### fullscreenGalleryAppBarLeadingWidget
+A custom widget to use as the leading widget in the fullscreen gallery AppBar
