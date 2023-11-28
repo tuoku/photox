@@ -163,105 +163,122 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
           backgroundColor: Colors.transparent,
         ),
         extendBodyBehindAppBar: true,
-        body: Listener(
-            onPointerMove: (event) =>
-                widget.dismissMode == DismissMode.swipeAny &&
-                        !isLocked &&
-                        !isZoomed
-                    ? _pointerMove(event)
-                    : null,
-            onPointerDown: (event) {
-              _pointersOnScreen++;
-              setState(() => isLocked = _pointersOnScreen >= 2);
-              if (widget.dismissMode == DismissMode.swipeAny &&
-                  !isLocked &&
-                  !isZoomed) {
-                _pointerDown(event);
-              }
-            },
-            onPointerUp: (event) {
-              _pointersOnScreen--;
-              if (widget.dismissMode == DismissMode.swipeAny &&
-                  !isLocked &&
-                  !isZoomed) {
-                if (positionYDelta > disposeLimit ||
-                    positionYDelta < -disposeLimit ||
-                    positionXDelta > disposeLimit ||
-                    positionXDelta < -disposeLimit) {
-                  Navigator.of(context).pop();
-                } else {
-                  setState(() {
-                    animationDuration = const Duration(milliseconds: 300);
-                    opacity = 1;
-                    positionYDelta = 0;
-                    positionXDelta = 0;
-                  });
+        body: Stack(
+          children: [
+            Listener(
+                onPointerMove: (event) =>
+                    widget.dismissMode == DismissMode.swipeAny &&
+                            !isLocked &&
+                            !isZoomed
+                        ? _pointerMove(event)
+                        : null,
+                onPointerDown: (event) {
+                  _pointersOnScreen++;
+                  setState(() => isLocked = _pointersOnScreen >= 2);
+                  if (widget.dismissMode == DismissMode.swipeAny &&
+                      !isLocked &&
+                      !isZoomed) {
+                    _pointerDown(event);
+                  }
+                },
+                onPointerUp: (event) {
+                  _pointersOnScreen--;
+                  if (widget.dismissMode == DismissMode.swipeAny &&
+                      !isLocked &&
+                      !isZoomed) {
+                    if (positionYDelta > disposeLimit ||
+                        positionYDelta < -disposeLimit ||
+                        positionXDelta > disposeLimit ||
+                        positionXDelta < -disposeLimit) {
+                      Navigator.of(context).pop();
+                    } else {
+                      setState(() {
+                        animationDuration = const Duration(milliseconds: 300);
+                        opacity = 1;
+                        positionYDelta = 0;
+                        positionXDelta = 0;
+                      });
 
-                  Future.delayed(animationDuration).then((_) {
-                    setState(() {
-                      animationDuration = Duration.zero;
-                    });
-                  });
-                }
-              }
-            },
-            child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onVerticalDragStart: (details) =>
-                    widget.dismissMode == DismissMode.swipeAny ||
-                            isLocked ||
-                            isZoomed
-                        ? null
-                        : _startVerticalDrag(details),
-                onVerticalDragUpdate: (details) =>
-                    widget.dismissMode == DismissMode.swipeAny ||
-                            isLocked ||
-                            isZoomed
-                        ? null
-                        : _whileVerticalDrag(details),
-                onVerticalDragEnd: (details) =>
-                    widget.dismissMode == DismissMode.swipeAny ||
-                            isLocked ||
-                            isZoomed
-                        ? null
-                        : _endVerticalDrag(details),
-                child: Container(
-                  color: Colors.black.withOpacity(opacity),
-                  constraints: BoxConstraints.expand(
-                    height: MediaQuery.of(context).size.height,
-                  ),
-                  child: Container(
-                    decoration:
-                        BoxDecoration(color: Colors.black.withOpacity(0)),
-                    constraints: BoxConstraints.expand(
-                      height: MediaQuery.of(context).size.height,
-                    ),
-                    child: Stack(
-                      alignment: Alignment.bottomRight,
-                      children: <Widget>[
-                        AnimatedPositioned(
-                          duration: animationDuration,
-                          curve: Curves.fastOutSlowIn,
-                          top: 0 + positionYDelta,
-                          bottom: 0 - positionYDelta,
-                          left: 0 + positionXDelta,
-                          right: 0 - positionXDelta,
-                          child: PhotoViewGallery.builder(
-                            scrollPhysics: widget.items.length == 1
-                                ? const NeverScrollableScrollPhysics()
-                                : const BouncingScrollPhysics(),
-                            builder: _buildItem,
-                            itemCount: widget.items.length,
-                            backgroundDecoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0)),
-                            pageController: widget.pageController,
-                            onPageChanged: onPageChanged,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ))));
+                      Future.delayed(animationDuration).then((_) {
+                        setState(() {
+                          animationDuration = Duration.zero;
+                        });
+                      });
+                    }
+                  }
+                },
+                child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onVerticalDragStart: (details) =>
+                        widget.dismissMode == DismissMode.swipeAny ||
+                                isLocked ||
+                                isZoomed
+                            ? null
+                            : _startVerticalDrag(details),
+                    onVerticalDragUpdate: (details) =>
+                        widget.dismissMode == DismissMode.swipeAny ||
+                                isLocked ||
+                                isZoomed
+                            ? null
+                            : _whileVerticalDrag(details),
+                    onVerticalDragEnd: (details) =>
+                        widget.dismissMode == DismissMode.swipeAny ||
+                                isLocked ||
+                                isZoomed
+                            ? null
+                            : _endVerticalDrag(details),
+                    child: Container(
+                      color: Colors.black.withOpacity(opacity),
+                      constraints: BoxConstraints.expand(
+                        height: MediaQuery.of(context).size.height,
+                      ),
+                      child: Container(
+                        decoration:
+                            BoxDecoration(color: Colors.black.withOpacity(0)),
+                        constraints: BoxConstraints.expand(
+                          height: MediaQuery.of(context).size.height,
+                        ),
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: <Widget>[
+                            AnimatedPositioned(
+                              duration: animationDuration,
+                              curve: Curves.fastOutSlowIn,
+                              top: 0 + positionYDelta,
+                              bottom: 0 - positionYDelta,
+                              left: 0 + positionXDelta,
+                              right: 0 - positionXDelta,
+                              child: PhotoViewGallery.builder(
+                                scrollPhysics: widget.items.length == 1
+                                    ? const NeverScrollableScrollPhysics()
+                                    : const BouncingScrollPhysics(),
+                                builder: _buildItem,
+                                itemCount: widget.items.length,
+                                backgroundDecoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0)),
+                                pageController: widget.pageController,
+                                onPageChanged: onPageChanged,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ))),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                width: double.infinity,
+                height: 200,
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [Colors.black, Colors.transparent],
+                        stops: [0.25, 1],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter)),
+              ),
+            )
+          ],
+        ));
   }
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
