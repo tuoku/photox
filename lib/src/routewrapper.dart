@@ -152,19 +152,25 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          leading: widget.appBarLeadingWidget ??
-              IconButton(
-                icon: const Icon(Icons.close),
-                color: Colors.white,
-                onPressed: () => Navigator.of(context).pop(),
-              ),
+          leading: Opacity(
+            opacity: opacity,
+            child: widget.appBarLeadingWidget ??
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  color: Colors.white,
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+          ),
           elevation: 0,
           centerTitle: true,
           title: isSingle
               ? null
-              : Text(
-                  "${currentIndex + 1}/${widget.items.length}",
-                  style: widget.titleTextStyle,
+              : Opacity(
+                  opacity: opacity,
+                  child: Text(
+                    "${currentIndex + 1}/${widget.items.length}",
+                    style: widget.titleTextStyle,
+                  ),
                 ),
           backgroundColor: Colors.transparent,
         ),
@@ -275,12 +281,14 @@ class _PhotoxRouteWrapperState extends State<PhotoxRouteWrapper> {
               child: Container(
                 width: double.infinity,
                 height: 200,
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.black, Colors.transparent],
-                        stops: [0.25, 1],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter)),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                  Colors.black.withOpacity(opacity),
+                  Colors.transparent
+                ], stops: const [
+                  0.25,
+                  1
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
               ),
             )
           ],
