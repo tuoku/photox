@@ -7,3 +7,7 @@
 * Added customizable page indicator for thumbnail gallery
 * Added options to customize fullscreen gallery title TextStyle and leading widget
 * Added gradient behind fullscreen gallery AppBar for better label visibility
+
+## 0.2.1
+
+* Upgraded dependencies
